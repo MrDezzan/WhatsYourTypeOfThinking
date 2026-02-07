@@ -2,6 +2,19 @@ const questionn = document.querySelector('#question');
 const answerss = document.querySelector('#answers');
 const resultt = document.querySelector('#result');
 const descript = document.querySelector('#descr');
+const btn = document.querySelector('.mode');
+document.body.classList.toggle('dark');
+btn.addEventListener('click', () => {
+    document.body.classList.toggle('white');
+    document.body.classList.toggle('dark');
+
+    if (document.body.classList.contains('white')) {
+        btn.textContent = 'Тёмная 🌙';
+    } else {
+        btn.textContent = 'Светлая ☀️';
+    }
+});
+
 
 const quiz = [
     {
@@ -88,40 +101,32 @@ function showresult(){
     questionn.textContent = "Результат:";
     answerss.innerHTML = "";
 
-    if(
-        scores.analytic > scores.intuitive &&
-        scores.analytic > scores.practice &&
-        scores.analytic > scores.reflective
-    ){
+    const maxType = Object.keys(scores).reduce((a, b) =>
+        scores[a] > scores[b] ? a : b
+    );
+
+    if(maxType === "analytic"){
         resultt.textContent = "Ты аналитик 🔎";
         descript.textContent = `У тебя аналитический тип мышления. 
 Тебе важно понимать структуру, логику и взаимосвязи.
 Ты спокойно разбираешься в сложных системах и любишь,
 когда всё работает предсказуемо и рационально.`;
     }
-    else if(
-        scores.intuitive > scores.analytic &&
-        scores.intuitive > scores.practice &&
-        scores.intuitive > scores.reflective
-    ){
+    else if(maxType === "intuitive"){ 
         resultt.textContent = "Ты интуит 🎨";
         descript.textContent = `У тебя интуитивный тип мышления.
 Ты быстро видишь идеи и нестандартные решения,
 часто опираешься на ощущение направления,
 а не на строгие правила.`;
     }
-    else if(
-        scores.practice > scores.analytic &&
-        scores.practice > scores.intuitive &&
-        scores.practice > scores.reflective
-    ){
+    else if(maxType === "practice"){ 
         resultt.textContent = "Ты практик 🧱";
         descript.textContent = `У тебя практический тип мышления.
 Тебе важно движение и результат.
 Ты предпочитаешь действовать, тестировать и исправлять
 по ходу, вместо долгих размышлений.`;
     }
-    else{
+    else if(maxType === "reflective"){
         resultt.textContent = "Ты рефлексирующий 🌊";
         descript.textContent = `У тебя рефлексирующий тип мышления.
 Ты глубоко анализируешь опыт, эмоции и смысл происходящего.
@@ -140,7 +145,7 @@ function resetquiz(){
 
     resultt.textContent = "";
     descript.textContent = "";
-    restartBtn.style.display = "none";
+    restartBtn.classList.toggle('hidden');
 
     questionn.style.display = "block";
     answerss.style.display = "block";
@@ -150,12 +155,13 @@ questionn.style.display='none';
 answerss.style.display='none';
 const beginBtn = document.querySelector(`.begin`);
 beginBtn.addEventListener('click', () => {
-    beginBtn.style.display = "none";
+    beginBtn.classList.toggle('hidden');
+    restartBtn.classList.toggle('hidden');    
 
     resetquiz();
 })
 const restartBtn = document.querySelector(`.restart`);
-restartBtn.style.display = "none";
+restartBtn.classList.toggle('hidden');
 restartBtn.addEventListener('click', () => {
     
     resetquiz();
